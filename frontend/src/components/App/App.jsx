@@ -1,38 +1,45 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import * as styles from "./App.module.scss";
 import { Player, PlayerForm, PlayerList } from "../Player";
+import { getPlayers } from "../../helpers";
 
 function App() {
   const [players, setPlayers] = useState([]);
-  const [currentPlayer, setCurrentPlayer] = useState({});
-  const playersUrl = "http://localhost:3100/players";
+  const [currentPlayer, setCurrentPlayer] = useState(null);
 
   useEffect(() => {
-    const getPlayers = async url => {
-      const playersData = await axios.get(url);
-
-      setPlayers(playersData.data);
-    };
-
-    getPlayers(playersUrl);
+    getPlayers()
+      .then(players => setPlayers(players))
+      .catch(e => console.log(e));
   }, []);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
-        <div className="col s12">Menu</div>
+        <nav>
+          <div className="nav-wrapper blue darken-1">
+            <a href="/" className="brand-logo">
+              Soccer Managment
+            </a>
+          </div>
+        </nav>
         <div className="row">
           <div className="col s3">
-            {players[0] && <PlayerList players={players}/>}
+            {players[0] && (
+              <PlayerList
+                players={players}
+                setCurrentPlayer={setCurrentPlayer}
+              />
+            )}
           </div>
-          <div className="col s9">
-            <Player />
-          </div>
+          {currentPlayer && (
+            <div className="col s9">
+              <Player player={currentPlayer} />
+            </div>
+          )}
         </div>
         <div className="row">
           <div className="col s12">
-            <PlayerForm />
+            <PlayerForm setPlayers={setPlayers} />
           </div>
         </div>
       </div>
