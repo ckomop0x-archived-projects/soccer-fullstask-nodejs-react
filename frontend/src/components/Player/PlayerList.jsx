@@ -5,19 +5,17 @@ const PlayerList = props => {
   console.log("players", props);
 
   return (
-    <div className="collection">
-      <ul>
-        <li>
-          <h4>Players</h4>
-        </li>
+    <div>
+      <ul  className="collection with-header">
+        <li className="collection-header"><h5>Players</h5></li>
         {players.map(player => (
           <li key={player._id}>
-            <button
+            <a href="#!"
               className="collection-item"
               onClick={() => setCurrentPlayer(player)}
             >
               {player.firstName} {player.lastName}
-            </button>
+            </a>
           </li>
         ))}
       </ul>
